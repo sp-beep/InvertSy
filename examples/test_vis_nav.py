@@ -4,6 +4,7 @@ from invertpy.sense import CompoundEye
 from invertsy.agent import VisualNavigationAgent
 from invertsy.env.seville2009 import load_routes, Seville2009
 from invertsy.sim.simulation import VisualNavigationSimulation
+from invertsy.sim.animation import VisualNavigationAnimation
 
 import numpy as np
 
@@ -14,8 +15,8 @@ def main(*args):
     replace = True
     calibrate = True
 
-    nb_scans = 121
-    nb_ommatidia = 5000
+    nb_scans = 7
+    nb_ommatidia = 1000
 
     for ant_no, rt_no, rt in zip(routes['ant_no'], routes['route_no'], routes['path']):
         print("Ant#: %d, Route#: %d, steps#: %d" % (ant_no, rt_no, rt.shape[0]), end='')
@@ -35,7 +36,9 @@ def main(*args):
         agent = VisualNavigationAgent(eye, mem, nb_scans=nb_scans, speed=.01)
         sim = VisualNavigationSimulation(rt, agent=agent, world=Seville2009(), calibrate=calibrate, nb_scans=nb_scans,
                                          nb_ommatidia=nb_ommatidia, name=agent_name, free_motion=not replace)
-        sim(save=True)
+        ani = VisualNavigationAnimation(sim)
+        ani(save=False, show=True)
+        # sim(save=True)
 
 
 if __name__ == '__main__':
